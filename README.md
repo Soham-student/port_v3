@@ -8,62 +8,66 @@ A portfolio site built to match your design, as a full MERN app:
 
 ```
 portfolio/
-├─ client/   React app (Vite)
-│  └─ src/content.js   ← hero / about / footer copy and your social links
-└─ server/   Express API
-   └─ src/data/seedData.js   ← starter projects, skills, experience
+├─ index.html, vite.config.js, package.json   one project, one install
+├─ src/            React app (Vite)
+│  ├─ content.js   ← hero / about / footer copy and your social links
+│  └─ data/seedData.js   ← starter projects, skills, experience
+└─ server/         Express API (MongoDB)
 ```
 
-## Run it locally
+## Run it
 
-You need Node 20+ and a MongoDB (local, or a free Atlas cluster).
+You need Node 20+. Everything installs with one command:
 
 ```bash
-# 1. MongoDB (skip if you use Atlas) — needs Docker
-docker compose up -d
-
-# 2. Install everything
-npm run setup
-
-# 3. Configure the server
-cp server/.env.example server/.env
-#    then edit server/.env:
-#      JWT_SECRET      a long random string
-#      ADMIN_EMAIL / ADMIN_PASSWORD   your admin login (password: 10+ characters)
-#      MONGO_URI       only if not using the local MongoDB above
-#    Generate a secret with:
-#      node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
-
-# 4. Start API (port 5000) and site (port 5173) together
-npm run dev
+npm install
+npm run dev          # site only, http://localhost:3000
 ```
 
-Open <http://localhost:5173>. On first start the server creates your admin account and fills the database with the starter content from your design. Sign in at <http://localhost:5173/admin>.
+With no backend running, the site shows the built-in sample content (from `src/data/seedData.js`), so it works as a plain front end, for example in Google AI Studio or any static preview. The contact form and the admin panel need the API.
+
+### Full stack (API + database + admin)
+
+You also need a MongoDB (local, or a free Atlas cluster).
+
+```bash
+docker compose up -d            # local MongoDB (skip if you use Atlas)
+cp .env.example .env            # then edit .env:
+#   JWT_SECRET      a long random string
+#   ADMIN_EMAIL / ADMIN_PASSWORD   your admin login (password: 10+ characters)
+#   MONGO_URI       only if not using the local MongoDB above
+# Generate a secret with:
+#   node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+
+npm run dev:full     # API on port 5000 + site on port 3000
+```
+
+Open <http://localhost:3000>. On first start the server creates your admin account and fills the database with the starter content. Sign in at <http://localhost:3000/admin>.
 
 ## Things to personalise
 
 | What | Where |
 | --- | --- |
-| GitHub / LinkedIn links, availability line | `client/src/content.js` (`site`) |
-| Hero text, about text, contact copy | `client/src/content.js` |
+| GitHub / LinkedIn links, availability line | `src/content.js` (`site`) |
+| Hero text, about text, contact copy | `src/content.js` |
 | Projects and their case studies (summary, role, tags, year, cover image, Overview / Challenge / Approach, links) | Admin → Projects |
-| Overall UI size (fonts, buttons, spacing) | `client/src/styles.css` → `html { font-size: clamp(13px, 0.8vw, 15.4px) }` (desktop). Lower the numbers to shrink everything, raise them to enlarge. |
+| Overall UI size (fonts, buttons, spacing) | `src/styles.css` → `html { font-size: clamp(13px, 0.8vw, 15.4px) }` (desktop). Lower the numbers to shrink everything, raise them to enlarge. |
 | Skills columns | Admin → Skills |
 | Experience entries | Admin → Experience |
 
 - Clicking a project in the Work list opens its case study at `/work/<slug>`. The slug is made from the title unless you set one. The cover is generated artwork unless you add a **Cover image** (an `https://` link or a `/path`). **Live site** and **Source code** links appear on the case-study page when set.
 - **Sample content:** the six projects (apart from Orbit's text, which comes from your screenshot) and the experience entries are placeholders. Replace them in the admin panel with your real work.
 - Smooth scrolling uses Lenis. It switches off automatically for visitors who prefer reduced motion and on the admin pages.
-- If your database was seeded before case studies were added, run `npm run seed:reset --prefix server` to load the new sample projects (this replaces projects, skills and experience with the starter data).
-- Reset the content to the starter data with `npm run seed:reset --prefix server`. Any run of the seed script (`npm run seed`) also sets the admin password to the current `ADMIN_PASSWORD`, which is how you change it.
+- If your database was seeded before case studies were added, run `npm run seed:reset` to load the new sample projects (this replaces projects, skills and experience with the starter data).
+- Reset the content to the starter data with `npm run seed:reset`. Any run of the seed script (`npm run seed`) also sets the admin password to the current `ADMIN_PASSWORD`, which is how you change it.
 
 ## Deploy (one service)
 
 The server serves the built React app, so one host is enough (Render, Railway, Fly, a VPS…).
 
 ```bash
-npm run setup
-npm run build     # builds client/dist
+npm install
+npm run build     # builds dist/
 npm start         # serves API + site on $PORT
 ```
 

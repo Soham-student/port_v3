@@ -10,7 +10,7 @@ import routes from './routes/index.js';
 import { errorHandler, notFound } from './middleware/errors.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const clientDist = path.resolve(__dirname, '../../client/dist');
+const clientDist = path.resolve(__dirname, '../../dist');
 
 export function createApp() {
   const app = express();

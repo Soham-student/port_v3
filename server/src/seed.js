@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import { env } from './config/env.js';
 import { connectDB } from './config/db.js';
 import { Admin, Experience, Project, SkillGroup } from './models/index.js';
-import * as seedData from './data/seedData.js';
+import * as seedData from '../../src/data/seedData.js';
 import { slugify, uniqueSlug } from './utils/slug.js';
 
 /**
