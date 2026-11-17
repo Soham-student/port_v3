@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import rateLimit from 'express-rate-limit';
+import mongoose from 'mongoose';
+import * as seedData from '../../src/data/seedData.js';
 import { Admin, Experience, Message, Project, SkillGroup } from '../models/index.js';
 import { requireAdmin, signToken } from '../middleware/auth.js';
 import { checkId, listRouter, writeRouter } from './crud.js';
@@ -45,9 +47,22 @@ router.get('/health', (req, res) => res.json({ ok: true }));
 const projectsPublic = listRouter(Project);
 projectsPublic.get('/:slug', async (req, res) => {
   if (!/^[a-z0-9-]{1,60}$/.test(req.params.slug)) return res.status(404).json({ error: 'Not found' });
-  const doc = await Project.findOne({ slug: req.params.slug }).lean();
-  if (!doc) return res.status(404).json({ error: 'Not found' });
-  res.json(doc);
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      throw new Error('DB offline');
+    }
+    const doc = await Project.findOne({ slug: req.params.slug }).lean();
+    if (!doc) {
+      const found = seedData.projects.find(p => p.slug === req.params.slug);
+      if (found) return res.json({ _id: 'seed-' + found.slug, ...found });
+      return res.status(404).json({ error: 'Not found' });
+    }
+    res.json(doc);
+  } catch {
+    const found = seedData.projects.find(p => p.slug === req.params.slug);
+    if (found) return res.json({ _id: 'seed-' + found.slug, ...found });
+    res.status(404).json({ error: 'Not found' });
+  }
 });
 router.use('/projects', projectsPublic);
 router.use('/experience', listRouter(Experience));

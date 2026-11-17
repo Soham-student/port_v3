@@ -3,25 +3,6 @@ import { work } from '../content.js';
 import { useList, useReveal } from '../hooks.js';
 import { Status } from './SectionHead.jsx';
 
-function ArrowUpRight() {
-  return (
-    <svg
-      className="arrow"
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M4 12 12 4M5.5 4H12v6.5" />
-    </svg>
-  );
-}
-
 function Row({ project }) {
   return (
     <Link className="row row--link" to={`/work/${project.slug}`}>
@@ -37,9 +18,6 @@ function Row({ project }) {
           </li>
         ))}
       </ul>
-      <span className="mono row__meta">
-        {project.year} <ArrowUpRight />
-      </span>
     </Link>
   );
 }

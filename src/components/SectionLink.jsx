@@ -14,6 +14,9 @@ export default function SectionLink({ id, local = false, onClick, children, ...r
     onClick?.(e);
     if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
     e.preventDefault();
+    if (pathname.startsWith('/work/') && id === 'contact') {
+      try { sessionStorage.setItem('projectInquiry', 'true'); } catch {}
+    }
     if (local || pathname === '/') {
       scrollToId(id);
       if (!local) window.history.replaceState(null, '', id === 'top' ? '/' : `/#${id}`);

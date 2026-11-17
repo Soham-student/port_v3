@@ -102,12 +102,7 @@ export default function CaseStudy() {
             </div>
           ) : (
             <>
-              <p className="case__meta mono anim" style={{ '--d': '0.12s' }}>
-                <span>Case study</span>
-                <span className="case__dash" aria-hidden="true" />
-                <span>{p.year}</span>
-                {p.featured && <span className="case__feat">Featured</span>}
-              </p>
+
               <h1 className="case__title anim" style={{ '--d': '0.2s' }}>
                 {p.title}
               </h1>
@@ -172,12 +167,9 @@ export default function CaseStudy() {
                 </div>
               </div>
 
-              <div className="case__cta reveal">
-                <p className="mono">Want the full walkthrough?</p>
-                <SectionLink id="contact" local className="btn btn--solid mono">
-                  Get in touch <Arrow dir="ne" />
-                </SectionLink>
-              </div>
+
+
+
             </>
           )}
         </div>

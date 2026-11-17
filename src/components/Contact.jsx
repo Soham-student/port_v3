@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { api, ApiError } from '../api.js';
 import { contactCopy } from '../content.js';
 import { Arrow } from './Hero.jsx';
@@ -8,6 +8,16 @@ const empty = { name: '', email: '', message: '', website: '' };
 export default function Contact() {
   const [form, setForm] = useState(empty);
   const [status, setStatus] = useState({ state: 'idle', error: '', fields: {} });
+  const [isProjectInquiry, setIsProjectInquiry] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem('projectInquiry') === 'true') {
+        setIsProjectInquiry(true);
+        sessionStorage.removeItem('projectInquiry');
+      }
+    } catch {}
+  }, []);
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
@@ -17,6 +27,8 @@ export default function Contact() {
     setStatus({ state: 'sending', error: '', fields: {} });
     try {
       await api('/contact', { method: 'POST', body: form });
+      const mailtoUrl = `mailto:soham4196@gmail.com?subject=${encodeURIComponent(`Message from ${form.name} via Portfolio`)}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`)}`;
+      window.location.href = mailtoUrl;
       setForm(empty);
       setStatus({ state: 'sent', error: '', fields: {} });
     } catch (err) {
@@ -32,9 +44,15 @@ export default function Contact() {
       <div className="container contact__grid">
         <div className="contact__intro">
           <h2 className="contact__title">
-            {contactCopy.title[0]}
-            <br />
-            {contactCopy.title[1]}
+            {isProjectInquiry ? (
+              <>Want to know<br />more about<br />this project ?</>
+            ) : (
+              <>
+                {contactCopy.title[0]}
+                <br />
+                {contactCopy.title[1]}
+              </>
+            )}
           </h2>
           <p className="contact__body">{contactCopy.body}</p>
         </div>
@@ -95,7 +113,7 @@ export default function Contact() {
               id="c-message"
               name="message"
               rows="5"
-              placeholder="The role, the stack, the team..."
+              placeholder="What shall we discuss ?"
               value={form.message}
               onChange={set('message')}
               aria-invalid={Boolean(fieldError('message'))}

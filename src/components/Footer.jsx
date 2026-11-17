@@ -1,17 +1,14 @@
-import { Link } from 'react-router-dom';
 import { site } from '../content.js';
-import { Arrow } from './Hero.jsx';
-import SectionLink from './SectionLink.jsx';
 
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="footer">
       <div className="container">
-        <div className="footer__row">
-          <div>
-            <p className="footer__name">{site.name}</p>
-            <p className="mono footer__tag">Full-stack engineer · React · Node · Databases</p>
+        <div className="footer__col">
+          <div className="footer__name">
+            <span>{site.first}</span>
+            <span>{site.last}</span>
           </div>
           <nav className="footer__links mono" aria-label="Footer">
             <a href={site.github} target="_blank" rel="noopener noreferrer">
@@ -20,16 +17,12 @@ export default function Footer() {
             <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
               LinkedIn
             </a>
-            <SectionLink id="contact" local>
-              Contact
-            </SectionLink>
-            <Link to="/admin">Admin</Link>
-            <SectionLink id="top" local className="footer__top">
-              Top <Arrow dir="up" />
-            </SectionLink>
+            <a href={site.leetcode} target="_blank" rel="noopener noreferrer">
+              LeetCode
+            </a>
           </nav>
         </div>
-        <p className="mono footer__copy">© {year} — Designed &amp; built by {site.name}</p>
+        <p className="mono footer__copy">©{year} - {site.name}</p>
       </div>
     </footer>
   );

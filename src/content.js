@@ -9,6 +9,7 @@ export const site = {
   availability: '',
   github: 'https://github.com/',
   linkedin: 'https://www.linkedin.com/',
+  leetcode: 'https://leetcode.com/',
 };
 
 export const nav = [
