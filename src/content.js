@@ -6,7 +6,7 @@ export const site = {
   first: 'Soham',
   last: 'Dengale',
   initials: 'SD',
-  availability: 'Open to internships, PPOs & full-time roles',
+  availability: '',
   github: 'https://github.com/',
   linkedin: 'https://www.linkedin.com/',
 };
@@ -24,7 +24,7 @@ export const hero = {
     'I build full-stack web products end to end — React interfaces on top of Node APIs and document databases — with an eye for structure, speed and detail.',
   facts: [
     { label: 'Currently working with', value: 'React · Node.js · Express · MongoDB' },
-    { label: 'Status', value: 'CS student · internships & full-time' },
+    { label: 'Focus', value: 'Full-stack web architecture & UI' },
     { label: 'Stack', value: 'React · Node · Express · MongoDB' },
     { label: 'Based', value: 'India · working worldwide' },
   ],
@@ -48,11 +48,10 @@ export const about = {
   paragraphs: [
     "I'm Soham Dengale, a computer science student and full-stack developer. My work sits in the overlap of clean data modelling and considered interface design — a product feels obvious to use when the structure underneath is honest.",
     'Most of what I build is React on the front, Node and Express behind it, with a document database holding the state. I write the tests that matter, keep the bundle small, and treat accessibility as a baseline rather than a feature.',
-    "Right now I'm open to internships, PPO tracks and full-time full-stack roles — somewhere I can learn from people who've shipped at scale and contribute from the first sprint.",
   ],
 };
 
 export const contactCopy = {
-  title: ['Hiring a', 'full-stack dev?'],
-  body: "Internship, PPO track or full-time — tell me about the team and what you're building. Every message comes straight to me, and I usually reply within a day.",
+  title: ['Get in', 'touch.'],
+  body: "Tell me about your project and what you're building. Every message comes straight to me, and I usually reply within a day.",
 };

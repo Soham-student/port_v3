@@ -1,6 +1,6 @@
 import { stack } from '../content.js';
 import { useList, useReveal } from '../hooks.js';
-import SectionHead, { Status } from './SectionHead.jsx';
+import { Status } from './SectionHead.jsx';
 
 export default function Stack() {
   const state = useList('/skills');
@@ -9,7 +9,6 @@ export default function Stack() {
   return (
     <section className="section" id="stack">
       <div className="container">
-        <SectionHead num="02" label="Stack" />
         <h2 className="h2 reveal">{stack.title}</h2>
         <p className="sub reveal">{stack.sub}</p>
 

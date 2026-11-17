@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { work } from '../content.js';
 import { useList, useReveal } from '../hooks.js';
-import SectionHead, { Status } from './SectionHead.jsx';
+import { Status } from './SectionHead.jsx';
 
 function ArrowUpRight() {
   return (
@@ -22,11 +22,10 @@ function ArrowUpRight() {
   );
 }
 
-function Row({ project, index }) {
-  const num = String(index + 1).padStart(2, '0');
+function Row({ project }) {
   return (
     <Link className="row row--link" to={`/work/${project.slug}`}>
-      <span className="mono row__num">{num}</span>
+      <span className="mono row__num" aria-hidden="true" />
       <div className="row__main">
         <h3>{project.title}</h3>
         <p>{project.description}</p>
@@ -52,7 +51,6 @@ export default function Work() {
   return (
     <section className="section" id="work">
       <div className="container">
-        <SectionHead num="01" label="Selected work" />
         <h2 className="h2 reveal">{work.title}</h2>
         <p className="sub reveal">{work.sub}</p>
 

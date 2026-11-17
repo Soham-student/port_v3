@@ -8,43 +8,53 @@ import morgan from 'morgan';
 import { env } from './config/env.js';
 import routes from './routes/index.js';
 import { errorHandler, notFound } from './middleware/errors.js';
+import { createServer as createViteServer } from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const clientDist = path.resolve(__dirname, '../../dist');
+const rootDir = path.resolve(__dirname, '../../');
+const clientDist = path.resolve(rootDir, 'dist');
 
-export function createApp() {
+export async function createApp() {
   const app = express();
 
-  // Behind a reverse proxy (Render, Railway, Nginx...) so rate limiting sees real IPs.
   if (env.isProd) app.set('trust proxy', 1);
 
   app.use(
     helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          scriptSrc: ["'self'"],
-          styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-          fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-          imgSrc: ["'self'", 'data:'],
-          connectSrc: ["'self'"],
-          objectSrc: ["'none'"],
-          frameAncestors: ["'none'"],
-        },
-      },
+      contentSecurityPolicy: env.isProd
+        ? {
+            directives: {
+              defaultSrc: ["'self'"],
+              scriptSrc: ["'self'"],
+              styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+              fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+              imgSrc: ["'self'", 'data:'],
+              connectSrc: ["'self'"],
+              objectSrc: ["'none'"],
+              frameAncestors: ["'none'"],
+            },
+          }
+        : false,
     })
   );
   app.use(cors({ origin: env.clientOrigins }));
   app.use(express.json({ limit: '20kb' }));
-  if (!env.isProd) app.use(morgan('dev'));
+  app.use(morgan('dev'));
 
   app.use('/api', routes);
-  app.use('/api', notFound);
 
-  // In production the server also serves the built React app.
-  if (fs.existsSync(path.join(clientDist, 'index.html'))) {
-    app.use(express.static(clientDist, { index: false, maxAge: '1h' }));
-    app.get('/{*splat}', (req, res) => res.sendFile(path.join(clientDist, 'index.html')));
+  if (env.isProd) {
+    if (fs.existsSync(path.join(clientDist, 'index.html'))) {
+      app.use(express.static(clientDist, { index: false, maxAge: '1h' }));
+      app.get('*', (req, res) => res.sendFile(path.join(clientDist, 'index.html')));
+    }
+  } else {
+    const vite = await createViteServer({
+      root: rootDir,
+      server: { middlewareMode: true, hmr: true },
+      appType: 'spa',
+    });
+    app.use(vite.middlewares);
   }
 
   app.use(errorHandler);

@@ -1,6 +1,6 @@
 import { experienceCopy } from '../content.js';
 import { useList, useReveal } from '../hooks.js';
-import SectionHead, { Status } from './SectionHead.jsx';
+import { Status } from './SectionHead.jsx';
 
 export default function Experience() {
   const state = useList('/experience');
@@ -9,7 +9,6 @@ export default function Experience() {
   return (
     <section className="section" id="experience">
       <div className="container">
-        <SectionHead num="03" label="Experience" />
         <h2 className="h2 reveal">{experienceCopy.title}</h2>
 
         <div className="timeline">

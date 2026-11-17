@@ -1,8 +1,6 @@
-export default function SectionHead({ num, label }) {
+export default function SectionHead({ label }) {
   return (
     <div className="section-head reveal">
-      <span className="mono section-head__num">{num}</span>
-      <span className="section-head__line" aria-hidden="true" />
       <span className="mono section-head__label">{label}</span>
     </div>
   );

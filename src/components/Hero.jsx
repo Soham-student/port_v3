@@ -6,10 +6,12 @@ export default function Hero() {
     <section className="hero" id="top">
       <div className="hero__grid" aria-hidden="true" />
       <div className="container">
-        <p className="eyebrow mono anim" style={{ '--d': '0.05s' }}>
-          <span className="dot" aria-hidden="true" />
-          {site.availability}
-        </p>
+        {site.availability && (
+          <p className="eyebrow mono anim" style={{ '--d': '0.05s' }}>
+            <span className="dot" aria-hidden="true" />
+            {site.availability}
+          </p>
+        )}
 
         <h1 className="hero__name" aria-label={site.name}>
           <span className="hero__solid anim" style={{ '--d': '0.15s' }} aria-hidden="true">
@@ -26,7 +28,7 @@ export default function Hero() {
             <p className="lead anim" style={{ '--d': '0.65s' }}>{hero.intro}</p>
             <div className="btn-row anim" style={{ '--d': '0.78s' }}>
               <SectionLink id="work" className="btn btn--solid mono">
-                Selected work <Arrow />
+                Projects <Arrow />
               </SectionLink>
               <SectionLink id="contact" local className="btn btn--ghost mono">
                 Get in touch

@@ -31,7 +31,6 @@ export default function Contact() {
     <section className="contact" id="contact">
       <div className="container contact__grid">
         <div className="contact__intro">
-          <p className="mono contact__eyebrow">05 — Contact</p>
           <h2 className="contact__title">
             {contactCopy.title[0]}
             <br />
