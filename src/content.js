@@ -6,7 +6,6 @@ export const site = {
   first: "Soham",
   last: "Dengale",
   initials: "SD",
-  availability: "Open to internships, PPOs & full-time roles",
   github: "https://github.com/Soham-student",
   linkedin: "https://www.linkedin.com/",
   leetcode: "https://leetcode.com/",
