@@ -4,22 +4,39 @@ import { ensureSeed } from "../server/src/seed.js";
 import { createApp } from "../server/src/app.js";
 
 let appPromise;
+let databasePromise;
 
 async function getApp() {
-  if (mongoose.connection.readyState !== 1) {
-    await connectDB();
-    await ensureSeed();
-  }
   appPromise ||= createApp();
   return appPromise;
+}
+
+async function initializeDatabase() {
+  if (mongoose.connection.readyState === 1) return;
+
+  databasePromise ||= connectDB()
+    .then(() => ensureSeed())
+    .catch((error) => {
+      databasePromise = undefined;
+      throw error;
+    });
+
+  await databasePromise;
 }
 
 export default async function handler(req, res) {
   try {
     const app = await getApp();
+
+    if (mongoose.connection.readyState !== 1) {
+      await initializeDatabase();
+    }
+
     return app(req, res);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Could not connect to the database." });
+    console.error("Serverless API database error:", error);
+    return res.status(503).json({
+      error: "Database is unavailable. Configure MONGO_URI in Vercel and redeploy.",
+    });
   }
 }
