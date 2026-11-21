@@ -246,35 +246,43 @@ export const experience = [
     order: 2,
   },
   {
-    period: "2026",
-    title: "AI and automation builds",
-    org: "Hackathons & personal projects",
+    period: "Hackathon",
+    title: "Smart India Hackathon participant",
+    org: "National-level hackathon",
     description:
-      "Designed evidence-based AI copilots, hardware-aware model partitioning, multilingual assistants and reproducible data workflows.",
+      "Collaborated on an engineering solution under competition constraints, contributing across problem analysis, implementation and technical presentation.",
     order: 3,
   },
   {
-    period: "2025",
-    title: "Open-source contributor",
-    org: "Community",
+    period: "Hackathon",
+    title: "Hacktoberfest participant",
+    org: "Open-source community",
     description:
-      "Contributing fixes and small features to open-source projects, with attention to implementation quality and maintainability.",
+      "Contributed code and improvements to open-source repositories through pull requests, reviews and issue-focused fixes.",
     order: 4,
   },
   {
-    period: "2025",
-    title: "Hackathon participant",
-    org: "Technical events",
+    period: "IRIS role",
+    title: "Member",
+    org: "IRIS — MIT-WPU",
     description:
-      "Built and demoed real-time and AI-assisted products under time constraints, owning backend, data and integration responsibilities.",
+      "Started as a club member, learning collaboratively and contributing to technology projects and technical activities.",
     order: 5,
   },
   {
-    period: "2024",
-    title: "Web development club",
-    org: "Community",
+    period: "IRIS role",
+    title: "Project Lead",
+    org: "IRIS — MIT-WPU",
     description:
-      "Helped run sessions on HTML, CSS and JavaScript fundamentals for first-year students.",
+      "Led project execution by coordinating the team, defining technical responsibilities and guiding implementation from planning to delivery.",
     order: 6,
+  },
+  {
+    period: "IRIS role",
+    title: "Technical Head",
+    org: "IRIS — MIT-WPU",
+    description:
+      "Leading the club’s technical direction, supporting engineering initiatives and helping teams build and ship reliable projects.",
+    order: 7,
   },
 ];
