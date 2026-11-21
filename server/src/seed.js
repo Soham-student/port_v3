@@ -1,12 +1,12 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import bcrypt from 'bcryptjs';
-import mongoose from 'mongoose';
-import { env } from './config/env.js';
-import { connectDB } from './config/db.js';
-import { Admin, Experience, Project, SkillGroup } from './models/index.js';
-import * as seedData from '../../src/data/seedData.js';
-import { slugify, uniqueSlug } from './utils/slug.js';
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
+import { env } from "./config/env.js";
+import { connectDB } from "./config/db.js";
+import { Admin, Experience, Project, SkillGroup } from "./models/index.js";
+import * as seedData from "../../src/data/seedData.js";
+import { slugify, uniqueSlug } from "./utils/slug.js";
 
 /**
  * Inserts starter content into any EMPTY collection (or all of them with reset: true)
@@ -29,17 +29,23 @@ export async function ensureSeed({ reset = false, syncAdmin = false } = {}) {
   }
 
   // Projects saved before slugs existed get one so their case-study page works.
-  for (const p of await Project.find({ $or: [{ slug: { $exists: false } }, { slug: '' }] })) {
+  for (const p of await Project.find({
+    $or: [{ slug: { $exists: false } }, { slug: "" }],
+  })) {
     p.slug = await uniqueSlug(Project, slugify(p.title), p._id);
     await p.save();
   }
 
   if (!env.adminEmail || !env.adminPassword) {
-    console.warn('ADMIN_EMAIL / ADMIN_PASSWORD not set: no admin account was created.');
+    console.warn(
+      "ADMIN_EMAIL / ADMIN_PASSWORD not set: no admin account was created.",
+    );
     return;
   }
-  if (env.adminPassword.length < 10) {
-    console.warn('ADMIN_PASSWORD is shorter than 10 characters: admin account not created.');
+  if (typeof env.adminPassword !== "string" || env.adminPassword.length < 10) {
+    console.warn(
+      "ADMIN_PASSWORD is shorter than 10 characters: admin account not created.",
+    );
     return;
   }
 
@@ -56,8 +62,11 @@ export async function ensureSeed({ reset = false, syncAdmin = false } = {}) {
 }
 
 // CLI: `npm run seed` or `npm run seed:reset`
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const reset = process.argv.includes('--reset');
+if (
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
+  const reset = process.argv.includes("--reset");
   try {
     await connectDB();
     await ensureSeed({ reset, syncAdmin: true });
