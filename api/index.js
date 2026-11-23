@@ -28,7 +28,11 @@ export default async function handler(req, res) {
   try {
     const app = await getApp();
 
-    if (mongoose.connection.readyState !== 1) {
+    const pathname = new URL(req.url || "/", "http://localhost").pathname;
+    if (
+      !pathname.startsWith("/api/health") &&
+      mongoose.connection.readyState !== 1
+    ) {
       await initializeDatabase();
     }
 
@@ -36,7 +40,8 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Serverless API database error:", error);
     return res.status(503).json({
-      error: "Database is unavailable. Configure MONGO_URI in Vercel and redeploy.",
+      error: "Database is unavailable.",
+      detail: `${error?.name || "Error"}: ${error?.message || "Unknown database error"}`,
     });
   }
 }
